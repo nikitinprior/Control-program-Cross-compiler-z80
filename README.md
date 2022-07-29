@@ -41,11 +41,11 @@ After defining the environment variables INCDIR80, LIBDIR80 and PATH, in any cur
 
 To create a control program the cross-compiler zc3 for Linux or MacOS use the command:
 
-  gcc -O2 -o zc3 zc3.c
+        gcc -O2 -o zc3 zc3.c
 
 To create a control program compiler zc3 for UZI-180:
 
-  zc3 -O -ozc3 zc3.c execvp.c mktemp.c
+        zc3 -O -ozc3 zc3.c execvp.c mktemp.c
 
 An executable file for UZI-180 is being created, but it has not yet been tested on real hardware.
 
