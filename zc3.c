@@ -60,10 +60,10 @@
  *
  *	    zc3 -O zc3.c execvp.c mktemp.c
  *
- *	Changes made by Andrey Nikitin on 21-07-2022.
+ *	Changes made by Andrey Nikitin on 21-08-2022.
  */
 
-//#define OBJTOHEX_AND_CREF	// Delete comment to get full version of program.
+#define OBJTOHEX_AND_CREF	/* Delete comment to get full version of program. */
 
 #include <stdio.h>
 #include <ctype.h>
@@ -284,7 +284,8 @@ int main(int argc, char ** argv) {
 			if(strcmp(argv[0], "-Cpm") == 0
 			|| strcmp(argv[0], "-CPM") == 0) {
 				cpm = 1;
-				cppdef[0] = "-DCPM";
+//				cppdef[0] = "-DCPM";
+				iuds[0]   = "-DCPM";
 				objs[0]   = "crtcpm.obj";
 				break;
 			}
@@ -347,11 +348,11 @@ int main(int argc, char ** argv) {
 			fprintf(stderr, "\t-C         Generate object code only; don't link\n");
 			fprintf(stderr, "\t-CPM       Compile for CP/M. Without this option for UZI-180\n");
 #ifdef OBJTOHEX_AND_CREF
-			fprintf(stderr, "\t-CR        Produce a cross-reference listing e.g. -CRfile.crf\n");
+			fprintf(stderr, "\t-CRfile    Produce a cross-reference listing e.g. -CRfile.crf\n");
 #endif
 			fprintf(stderr, "\t-Dname     Defines name as 1., e.g. -DDEBUG=1\n");
-			fprintf(stderr, "\t-Dname=var Defines name as var.\n");
-			fprintf(stderr, "\t-E         Specify executable output filename, e.g. -Efile\n");
+			fprintf(stderr, "\t-Dname=var Defines name as var\n");
+			fprintf(stderr, "\t-Efile     Specify executable output filename, e.g. -Efile\n");
 			fprintf(stderr, "\t-Ffile     Generate a symbol file for debug.com (default L.SYM)\n");
 			fprintf(stderr, "\t-H         Output help and exit\n");
 			fprintf(stderr, "\t-Idir      Adds directory to the search path.\n");
@@ -362,7 +363,7 @@ int main(int argc, char ** argv) {
 			fprintf(stderr, "\t-S         Generate assembler code in a .as file; don't assemble or link\n");
 			fprintf(stderr, "\t-Uname     Remove an initial definition of name e.g. -UDEBUG\n");
 			fprintf(stderr, "\t-V         Be verbose during compilation\n");
-			fprintf(stderr, "\t-W         Set warning level, e.g. -w5 or -w-2\n");
+			fprintf(stderr, "\t-Wn        Sets the line length in the map file to n\n");
 			fprintf(stderr, "\t-X         Suppress local symbols in symbol tables\n");
 			exit(0); // Ignore all other options for HELP
 
@@ -415,6 +416,7 @@ void setup(void) {
     register char * cp;
     short	    i, len;
 
+//printf("\ntest setup start\n");
 
     cp = DEFPATH;
 
@@ -443,8 +445,12 @@ void setup(void) {
 
     for(i = 0 ; i < sizeof (cppdef) / (sizeof cppdef[0]) ; i++) {
 	iuds[i] = cppdef[i];
+
+//printf("test setup  iuds[%d] = %s\t cppdef[%d] = %s\n", i, iuds[i], i, cppdef[i]);
     }
     iud_idx = i;
+
+//printf("test setup end\n");
 }
 
 //**********************************************************************
@@ -761,15 +767,31 @@ void compile(char * s) {
     char            cbuf[50];
 #endif
 
+//printf("\ntest compile(%s) start\n", s);
+
     if(c_as_idx > 1)
 	printf("%s\n", s);
 
     for(j = 0; j < iud_idx ; j++) {
 	vec[j] = iuds[j];
+
+//printf("test compile vec[%d] = %s\t iuds[%d] = %s\n", j, vec[j], j, iuds[j]);
     }
+
+//printf("test compile End for\n");
+
     vec[j++] = s;
+
+//printf("test compile vec[%d] = %s\n", j-1, vec[j-1]);
+
     vec[j++] = tmpf1;
+
+//printf("test compile vec[%d] = %s\n", j-1, vec[j-1]);
+
     vec[j]   = (char *)0;
+//printf("test compile vec[%d] = %s\n", j, vec[j]);
+
+//printf("test compile START CPP\n\n");
 
     if(!doexec(cpp, vec))			// Preprocessor Pass
 	return;
