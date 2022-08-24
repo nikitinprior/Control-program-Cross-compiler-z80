@@ -66,3 +66,10 @@ I am grateful to all the unnamed people who cared enough to restore and preserve
 I apologize if I forgot to mention anyone.
 
 Andrey Nikitin 21-07-2022.
+
+Changes have been made to the source code:
+1. Removed the comment preventing the creation of the full version of the program.
+2. Fixed help output by specifying the -h option.
+3. Fixed some bugs.
+
+ Nikitin Andrey 24-08-2022
